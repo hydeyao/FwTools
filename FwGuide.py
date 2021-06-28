@@ -34,3 +34,11 @@ class BurnWay:
         self.way1 = way1
         self.way2 = way2
         self.way3 = way3
+
+
+class FWFilePath:
+    def __init__(self, id, fw_page, model, file_path):
+        self.id = id
+        self.fw_page = fw_page
+        self.model = model
+        self.file_path = file_path

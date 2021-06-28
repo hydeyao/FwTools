@@ -27,8 +27,8 @@ def init_class():
                                                 worksheet.cell(row + 3, 13).value,
                                                 worksheet.cell(row + 3, 14).value))
 
-        fw_list.insert(row, guide)
-    print(fw_list)
+        fw_list.insert(row + 1, guide)
+    return fw_list
 
 
 def init_fw():
@@ -52,8 +52,25 @@ def upload2DB():
     for fw in fw_list:
         cursor.execute("insert into FW_PATH (id, fw_page, model, filepath) values('%s', '%s', '%s', '%s')" %
                        (fw.id + 1, fw.fw_page, fw.model, fw.file_path))
+    db.commit()
+    db.close()
+
+
+def uploadFwGuide():
+    db = MySQLdb.connect("121.196.53.11", "root", "yh0769", "fw_db", charset='utf8')
+    cursor = db.cursor()
+    fw_guide_list = init_class()
+
+    for guide in fw_guide_list:
+        cursor.execute(
+            "insert into FW_GUIDE values('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" %
+            (guide.num, guide.model, guide.pid.major, guide.pid.first, guide.pid.second,
+             guide.pcb.fw1, guide.pcb.fw2, guide.pcb.fw3, guide.file_path.name1,
+             guide.file_path.name2, guide.file_path.name3, guide.burn_way.way1,
+             guide.burn_way.way2, guide.burn_way.way3))
 
     db.commit()
+    db.close()
 
 
 def print_hi(name):
@@ -61,5 +78,5 @@ def print_hi(name):
 
 
 if __name__ == '__main__':
-    init_class()
+    uploadFwGuide()
     # upload2DB()
